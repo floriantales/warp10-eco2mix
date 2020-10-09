@@ -1,0 +1,22 @@
+// Fetch 100 days Brittany wind production & smooth it
+'_CMyoxjEHWECcDynChiuwHG.rIeaiIY1mrZSWdfS6bz6p1PqNH_gpkppoqgKyGlmdnueFuWUPyamxzKOz2Ss90YFkjDifWZP9yAjCBjrh5PXJuYrL5anJV' 'Read_Token' STORE
+'AP_8QdbvhyjFJuuOoohNyHJClJd7ODr.vP5GMt.Y6irthsyFdeaZt_vx2CeCrQfpF465ADT1RKD5e488pteN2MhfVomQbEHAPX8Ra3foeYo' 'Write_Token' STORE
+// Select
+[
+$Read_Token 
+'eco2mix.production.mw'
+{
+  'region' 'Bretagne'
+  'source' 'eolien'
+} 
+NOW
+100 d
+]
+FETCH 'gts_eolien' STORE
+// Single Exponential Smoothing
+$gts_eolien
+0.01 // alpha (smoothing factor)
+SINGLEEXPONENTIALSMOOTHING 'gts_eolien_single_exp' STORE
+// Display
+$gts_eolien_single_exp
+$gts_eolien
