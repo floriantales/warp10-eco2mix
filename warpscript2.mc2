@@ -1,0 +1,39 @@
+'_CMyoxjEHWECcDynChiuwHG.rIeaiIY1mrZSWdfS6bz6p1PqNH_gpkppoqgKyGlmdnueFuWUPyamxzKOz2Ss90YFkjDifWZP9yAjCBjrh5PXJuYrL5anJV' 'Read_Token' STORE
+'AP_8QdbvhyjFJuuOoohNyHJClJd7ODr.vP5GMt.Y6irthsyFdeaZt_vx2CeCrQfpF465ADT1RKD5e488pteN2MhfVomQbEHAPX8Ra3foeYo' 'Write_Token' STORE
+
+// Fetch Production Renouvelable
+[
+$Read_Token
+'eco2mix.production.mw'
+{
+  'region' 'Bretagne'
+  'source' '~(hydrolique|bioenregie|eolien|solaire)'
+}
+NOW
+100 d
+]
+FETCH 'gts_prod' STORE
+
+// Somme des production Renouvelable
+[ $gts_prod [] reducer.sum ] REDUCE 'gts_prod' STORE
+
+// Single Exponential Smoothing
+//$gts_prod
+//0.01 // alpha (smoothing factor)
+//SINGLEEXPONENTIALSMOOTHING 'gts_prod_smooth' STORE
+
+// Fetch Consommation
+[
+$Read_Token
+'eco2mix.consommation.mw'
+{
+  'region' 'Bretagne'
+}
+NOW
+100 d
+]
+FETCH 'gts_conso' STORE
+
+// Display
+$gts_prod
+$gts_conso
